@@ -6,7 +6,7 @@ const fs = require('fs');
 client.on('message', async message => {
   if (message.content === '!capybara') {
     // Get a list of all files in the 'capybara_images' folder
-    const files = fs.readdirSync('./resources/imgss');
+    const files = fs.readdirSync('./resources/imgs');
     // Choose a random file
     const file = files[Math.floor(Math.random() * files.length)];
     // Send the file as an attachment
@@ -26,7 +26,7 @@ client.on('message', async message => {
       }
     }
 
-    const commits = await getCommits('USERNAME/REPO_NAME');
+    const commits = await getCommits('WitheredKnights');
     let commitMessage = '';
     commits.forEach(commit => {
       commitMessage += `Commit by ${commit.commit.author.name}: ${commit.commit.message}\n`;
@@ -37,4 +37,4 @@ client.on('message', async message => {
   }
 });
 
-client.login('YOUR_DISCORD_BOT_TOKEN_HERE');
+client.login('MTA1NTg2ODM5NjM0MTgyOTczMw.GARLgW.2dx_pqBHjUyy2RVXig6-A7IatfBqCXqhcz7PEo');
