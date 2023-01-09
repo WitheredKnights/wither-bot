@@ -32,6 +32,9 @@ client.on('message', async message => {
     message.channel.send(`There are ${commits.length} commits in the repository.`);
   } else if (message.content === '!link') {
     message.channel.send('https://github.com/witheredknights/');
+  } else if (message.content === '!userinfo') {
+    const user = message.author;
+    message.channel.send(`Username: ${user.username}\nDiscriminator: ${user.discriminator}\nID: ${user.id}\nAvatar: ${user.avatarURL()}`);
   }
 });
 
