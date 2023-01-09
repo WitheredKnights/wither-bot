@@ -9,7 +9,7 @@ const fs = require('fs');
 // Read the list of files in the 'capybara_images' folder when the bot starts up
 const capybaraFiles = fs.readdirSync('./resources/imgs');
 
-client.on('message', async message => {
+client.on('messageCreate', async message => {
   if (message.content === '!capybara') {
     // Choose a random file from the list of files
     const file = capybaraFiles[Math.floor(Math.random() * capybaraFiles.length)];
