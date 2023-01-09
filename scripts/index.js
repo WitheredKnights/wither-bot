@@ -3,12 +3,13 @@ const client = new Discord.Client();
 const axios = require('axios');
 const fs = require('fs');
 
+// Read the list of files in the 'capybara_images' folder when the bot starts up
+const capybaraFiles = fs.readdirSync('./resources/imgs');
+
 client.on('message', async message => {
   if (message.content === '!capybara') {
-    // Get a list of all files in the 'capybara_images' folder
-    const files = fs.readdirSync('./resources/imgs');
-    // Choose a random file
-    const file = files[Math.floor(Math.random() * files.length)];
+    // Choose a random file from the list of files
+    const file = capybaraFiles[Math.floor(Math.random() * capybaraFiles.length)];
     // Send the file as an attachment
     message.channel.send({
       files: [{
@@ -27,11 +28,8 @@ client.on('message', async message => {
     }
 
     const commits = await getCommits('WitheredKnights');
-    let commitMessage = '';
-    commits.forEach(commit => {
-      commitMessage += `Commit by ${commit.commit.author.name}: ${commit.commit.message}\n`;
-    });
-    message.channel.send(commitMessage);
+    // Send a summary message instead of a message for every commit
+    message.channel.send(`There are ${commits.length} commits in the repository.`);
   } else if (message.content === '!link') {
     message.channel.send('https://github.com/witheredknights/');
   }
