@@ -1,5 +1,8 @@
 const Discord = require('discord.js');
-const client = new Discord.Client();
+const client = new Discord.Client({
+    intents: [Object.keys(GatewayIntentBits)],
+    partials: [Object.keys(Partials)]
+});
 const axios = require('axios');
 const fs = require('fs');
 
