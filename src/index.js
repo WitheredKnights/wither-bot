@@ -1,8 +1,6 @@
 const { Client, GatewayIntentBits, Partials, Collection } = require('discord.js');
 const config = require('../resources/config.js');
 const { readdirSync } = require('fs');
-const link = require('./commands/link.js');
-const { EmbedBuilder } = require('@discordjs/builders');
 
 const client = new Client({
     intents: Object.keys(GatewayIntentBits),
@@ -22,9 +20,7 @@ for (let file of events) {
     let eventName = file.split('.').at(0);
     let event = require(`${__dirname}/events/${file}`);
     client.on(eventName, event.bind(null, client));
-}
-
-client.commands.set(link.name, link);
+} 
 
 client.on('messageCreate', async (message) => {
     if (!message.content.startsWith(config.bot.prefix) || message.author.bot) return;
@@ -32,7 +28,7 @@ client.on('messageCreate', async (message) => {
     let args = message.content.slice(config.prefix.length).trim().split(/ +/g);
     let command = client.commands.get(args.shift().toLowerCase());
 
-    if(command) {
+    if (command) {
         await command.execute(client, message, args);
     } else {
         await message.channel.send('Unknown command.');
