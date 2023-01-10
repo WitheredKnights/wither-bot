@@ -1,6 +1,7 @@
 const { Client, GatewayIntentBits, Partials, Collection } = require('discord.js');
 const config = require('../resources/config.js');
 const { readdirSync } = require('fs');
+const link = require('./commands/link.js');
 
 const client = new Client({
     intents: Object.keys(GatewayIntentBits),
@@ -15,8 +16,10 @@ for (let file of files) {
     client.commands.set(command.name, command);
 }
 
+client.commands.set(link.name, link);
+
 client.on('messageCreate', async (message) => {
-    if (message.content.indexOf(config.prefix) != 0) return;
+    if (!message.content.startsWith(config.prefix) || message.author.bot) return;
     
     let args = message.content.slice(config.prefix.length).trim().split(/ +/g);
     let command = client.commands.get(args.shift().toLowerCase());
