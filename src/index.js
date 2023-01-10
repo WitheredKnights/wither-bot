@@ -2,6 +2,7 @@ const { Client, GatewayIntentBits, Partials, Collection } = require('discord.js'
 const config = require('../resources/config.js');
 const { readdirSync } = require('fs');
 const link = require('./commands/link.js');
+const { EmbedBuilder } = require('@discordjs/builders');
 
 const client = new Client({
     intents: Object.keys(GatewayIntentBits),
@@ -10,16 +11,23 @@ const client = new Client({
 
 client.commands = new Collection();
 
-const files = readdirSync(`${__dirname}/commands`).filter(e => e.endsWith('.js'));
-for (let file of files) {
+const commands = readdirSync(`${__dirname}/commands`).filter(e => e.endsWith('.js'));
+for (let file of commands) {
     let command = require(`${__dirname}/commands/${file}`);
     client.commands.set(command.name, command);
+}
+
+const events = readdirSync(`${__dirname}/events`).filter(e => e.endsWith('.js'));
+for (let file of events) {
+    let eventName = file.split('.').at(0);
+    let event = require(`${__dirname}/events/${file}`);
+    client.on(eventName, event.bind(null, client));
 }
 
 client.commands.set(link.name, link);
 
 client.on('messageCreate', async (message) => {
-    if (!message.content.startsWith(config.prefix) || message.author.bot) return;
+    if (!message.content.startsWith(config.bot.prefix) || message.author.bot) return;
     
     let args = message.content.slice(config.prefix.length).trim().split(/ +/g);
     let command = client.commands.get(args.shift().toLowerCase());
@@ -31,4 +39,17 @@ client.on('messageCreate', async (message) => {
     }
 });
 
-client.login(config.token);
+process.on('uncaughtException', async (err, origin) => {
+    let logs = await client.channels.fetch(config.channels.logs);
+
+    let embed = new EmbedBuilder()
+        .setTitle('An error has occured')
+        .setDescription(`${err.message}`)
+        .setColor(0xFFFF00).setTimestamp();
+
+    if (logs) {
+        await logs.send({ embeds: [ embed ] });
+    }
+});
+
+client.login(config.bot.token);

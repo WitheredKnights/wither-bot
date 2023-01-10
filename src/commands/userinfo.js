@@ -1,7 +1,16 @@
+const { Client, Message} = require('discord.js');
+
 module.exports = {
     name: 'userinfo',
     description: 'Sends the user\'s public information',
-    execute(client, message, args) {
+
+    /**
+     * 
+     * @param {Client} client 
+     * @param {Message} message 
+     * @param {Array} args 
+     */
+    async execute(client, message, args) {
         const user = message.author;
         const embed = {
             title: `${user.username}'s Public Information`,

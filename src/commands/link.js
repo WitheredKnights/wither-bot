@@ -1,4 +1,5 @@
 const { Message, Client } = require('discord.js');
+const config = require('../../resources/config');
 
 module.exports = {
     name: 'link',
@@ -10,6 +11,6 @@ module.exports = {
      * @param {Array} args
      */
     async execute(client, message, args) {
-        message.channel.send('https://github.com/witheredknights');
+        await message.channel.send(config.links.github);
     }
 };
