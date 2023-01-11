@@ -1,4 +1,4 @@
-const { Client, GatewayIntentBits, Partials, Collection } = require('discord.js');
+const { Client, GatewayIntentBits, Partials, Collection, Presence, ActivityType } = require('discord.js');
 const config = require('../resources/config.js');
 const { readdirSync } = require('fs');
 
@@ -7,45 +7,50 @@ const client = new Client({
     partials: Object.keys(Partials)
 });
 
+const path = __dirname;
 client.commands = new Collection();
 
-const commands = readdirSync(`${__dirname}/commands`).filter(e => e.endsWith('.js'));
+const commands = readdirSync(path + '/commands').filter(e => e.endsWith('.js'));
 for (let file of commands) {
-    let command = require(`${__dirname}/commands/${file}`);
+    let command = require(`${path}/commands/${file}`);
     client.commands.set(command.name, command);
 }
 
-const events = readdirSync(`${__dirname}/events`).filter(e => e.endsWith('.js'));
+const events = readdirSync(path + `/events`).filter(e => e.endsWith('.js'));
 for (let file of events) {
     let eventName = file.split('.').at(0);
-    let event = require(`${__dirname}/events/${file}`);
+    let event = require(`${path}/events/${file}`);
     client.on(eventName, event.bind(null, client));
-} 
+}
 
 client.on('messageCreate', async (message) => {
-    if (!message.content.startsWith(config.bot.prefix) || message.author.bot) return;
+
+    let logs = await client.channels.fetch(config.channels.logs);
+   
+    // Avoid flooding logs
+    if(message.channel.id == logs.id && !message.author.bot) {
+        try {
+            await message.delete();
+        } catch (err) {}
+        return;
+    }
+
+    // Command executor
+    if (!message.content.indexOf(config.bot.prefix) != 0 || message.author.bot) return;
     
-    let args = message.content.slice(config.prefix.length).trim().split(/ +/g);
+    let args = message.content.slice(config.bot.prefix.length).trim().split(/ +/g);
     let command = client.commands.get(args.shift().toLowerCase());
 
     if (command) {
         await command.execute(client, message, args);
-    } else {
-        await message.channel.send('Unknown command.');
     }
 });
 
-process.on('uncaughtException', async (err, origin) => {
-    let logs = await client.channels.fetch(config.channels.logs);
-
-    let embed = new EmbedBuilder()
-        .setTitle('An error has occured')
-        .setDescription(`${err.message}`)
-        .setColor(0xFFFF00).setTimestamp();
-
-    if (logs) {
-        await logs.send({ embeds: [ embed ] });
-    }
+client.login(config.bot.token).then(() => {
+    client.user.setPresence({
+        activities: [{
+            name: 'WitheredKnights', type: ActivityType.Playing
+        }],
+        status: 'idle'
+    });
 });
-
-client.login(config.bot.token);
