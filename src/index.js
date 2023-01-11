@@ -25,17 +25,15 @@ for (let file of events) {
 
 client.on('messageCreate', async (message) => {
 
-    // Avoid flooding logs
-    if(message.channel.id == config.channels.logs) {
-        if(message.author.bot) return;
-        try {
-            await message.delete();
-        } catch (err) {}
-        return;
+    let logs = await client.channels.fetch(config.channels.logs);
+
+    // Avoid flooding the logs channel.
+    if (message.channel.id == logs.id && !message.author.bot) {
+        await message.delete();
     }
 
     // Command executor
-    if (!message.content.indexOf(config.bot.prefix) != 0 || message.author.bot) return;
+    if (!message.content.startsWith(config.bot.prefix)|| message.author.bot) return;
     
     let args = message.content.slice(config.bot.prefix.length).trim().split(/ +/g);
     let command = client.commands.get(args.shift().toLowerCase());

@@ -8,7 +8,7 @@ module.exports = {
     },
     links: {
         github: 'https://github.com/WitheredKnights',
-        discord: 'https://dsc.gg/',
-        website: 'No website, yet.'
+        discord: 'https://dsc.gg/witheredknights',
+        website: 'https://witheredknights.github.io/'
     }
 }

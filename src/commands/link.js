@@ -4,7 +4,7 @@ const config = require('../../resources/config');
 
 module.exports = {
     name: 'link',
-    description: 'Sends a link to the specified repository',
+    description: 'Get the official WitheredKnights links.',
     
     /**
      * @param {Client} client
@@ -23,6 +23,11 @@ module.exports = {
                 .setStyle(ButtonStyle.Link)
                 .setURL(config.links.discord)
             )
+            .addComponents(new ButtonBuilder()
+                .setLabel('Website')
+                .setStyle(ButtonStyle.Link)
+                .setURL(config.links.website)
+            );
 
         let embed = { title: 'Here are the official links of WitheredKnights' }
 
