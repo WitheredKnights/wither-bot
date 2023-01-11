@@ -25,10 +25,9 @@ for (let file of events) {
 
 client.on('messageCreate', async (message) => {
 
-    let logs = await client.channels.fetch(config.channels.logs);
-   
     // Avoid flooding logs
-    if(message.channel.id == logs.id && !message.author.bot) {
+    if(message.channel.id == config.channels.logs) {
+        if(message.author.bot) return;
         try {
             await message.delete();
         } catch (err) {}
