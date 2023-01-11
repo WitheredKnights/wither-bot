@@ -9,6 +9,8 @@ const client = new Client({
 
 const path = __dirname;
 client.commands = new Collection();
+client.capybaras = readdirSync(path+'/../resources/imgs');
+client.capybaraPath = path + '/../resources/imgs';
 
 const commands = readdirSync(path + '/commands').filter(e => e.endsWith('.js'));
 for (let file of commands) {
