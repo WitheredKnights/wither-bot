@@ -2,7 +2,7 @@ const Discord = require("discord.js");
 
 module.exports = {
   name: "ban",
-  description: "Bans a mentioned user"
+  description: "Bans a mentioned user",
 
   async execute (client, message, args) {
     if (!message.guild.me.hasPermission("BAN_MEMBERS")) {
