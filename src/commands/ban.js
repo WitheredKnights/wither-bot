@@ -8,7 +8,7 @@ module.exports = {
   description: "Bans a mentioned user",
   usage: "ban @User",
   type: "user",
-  run: async (client, message, args) => {
+  async execute (client, message, args) {
     if (!message.guild.me.hasPermission("BAN_MEMBERS")) {
       return message.reply(`I don't have the required permission to ban members.`);
     }
