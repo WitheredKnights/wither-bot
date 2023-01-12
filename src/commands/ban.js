@@ -3,11 +3,8 @@ const config = require(`${process.cwd()}/botconfig/config.json`);
 
 module.exports = {
   name: "ban",
-  aliases: [""],
-  category: "🔰 Info",
-  description: "Bans a mentioned user",
-  usage: "ban @User",
-  type: "user",
+  description: "Bans a mentioned user"
+
   async execute (client, message, args) {
     if (!message.guild.me.hasPermission("BAN_MEMBERS")) {
       return message.reply(`I don't have the required permission to ban members.`);
