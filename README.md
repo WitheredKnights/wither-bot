@@ -20,4 +20,4 @@ MTA1NTg2ODM5NjM0MTgyOTczMw.GTkDlJ.k8rs2ItWRbxViHCsxKXqZdIziCYKgB2fBc1uiE
 !capybara - Sends picture of Capybara from [here](https://github.com/WitheredKnights/wither-bot/tree/main/resources/imgs)
 
 # ASSETS
-Capybara Images - https://github.com/Looskie/capybara-api { Pre-Installed }
+Capybara Images - https://github.com/Looskie/capybara-api { Manually Installed }
