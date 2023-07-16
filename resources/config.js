@@ -1,6 +1,6 @@
 module.exports = {
     bot: {
-        token: 'MTA1NTg2ODM5NjM0MTgyOTczMw.GTkDlJ.k8rs2ItWRbxViHCsxKXqZdIziCYKgB2fBc1uiE',
+        token: 'haha no',
         prefix: '!'
     },
     channels: {
